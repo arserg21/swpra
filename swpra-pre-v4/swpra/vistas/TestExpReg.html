@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <input type="text" name="inputt" id="inputt">
+    <!--<script src="scripts/scriptValidaciones.js"></script>-->
+    <script>
+        
+        //const regExp = /^(?=.{3,18}$)[a-zñA-ZÑ](\s?[a-zñA-ZÑ])*$/i;
+        //const regExp = /^[A-Z]{3}O19[0-9]{4}$/;
+        const regExp = /^(?=.{8,32}$)[a-zA-Z0-9](\s?[a-zA-Z0-9])*$/i;
+
+        const input = document.getElementById('inputt');
+
+        input.addEventListener('input', function() {
+            console.log(regExp.test(this.value));
+        });
+
+    </script>
+
+</body>
+</html>
