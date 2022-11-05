@@ -1,0 +1,4 @@
+ok = termino sin excepciones
+cumplioTarea = realizó o no la tarea
+sesionActiva = hay o no sesión
+mensaje = mensaje al usuario
