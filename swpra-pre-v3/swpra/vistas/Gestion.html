@@ -1,0 +1,392 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gestión</title>
+    <!--<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
+    -->
+    <link rel="stylesheet" href="../bootstrap-5.1.3-dist/css/bootstrap.min.css">
+    <script src="scripts/scriptSesionRequerida.js"></script>
+    <!--<style>
+        * {border: 1px solid black;}
+    </style>-->
+    
+</head>
+<body>
+    <!--barra de navegación-->
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="/swpra">SWPRA</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                <ul class="navbar-nav mb-2 mb-lg-0">
+                    <li class="nav-item">
+                        <a class="nav-link" aria-current="page" href="/swpra">Inicio</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link active" aria-current="page" href="/swpra/vistas/Gestion.html">Perfil</a>
+                    </li>
+                </ul>
+                <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
+                    <li class="nav-item ms-auto">
+                        <a id='refSalir' class="nav-link active" aria-current="page" href="/swpra/vistas/Gestion.html?accion=salir">Salir</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+    <!--letrero-->
+    <div class="shadow fs-2 py-5 text-center mb-5" id="letrero" style="background-color: #90CAF9;">
+        <span>Sistema web para repositorios académicos</span>
+    </div>
+    <!--barra de notificaciones-->
+    <div class="container container-fluid" id="notificaciones"></div>
+    <!--contenedor principal-->
+    <div id="principal" class="container container-fluid mt-5">
+        <!--salida-->
+        <div id="salida" class="text-center d-none">
+        </div>
+        <!--cuerpo-->
+        <!--Menú del administrador-->
+        <div id="menuAdmin" class="row row-md text-center gy-3 mb-3">
+            <div class="col-md-5 mx-auto">
+                <div class="card shadow" id="tarjetaEstudiantes">
+                    <div class="d-flex flex-row justify-content-center mt-5">
+                        <img src="../img/sistema/estudiante.png" alt="estudiante" width="30%" height="30%">
+                    </div>
+                    <div class="card-body">
+                        <h5 class="card-title">Estudiantes</h5>
+                        <a href="Gestion.html?gestion=estudiantes" class="btn btn-primary" id="refEstudiantes">SELECCIONAR</a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-5 mx-auto">
+                <div class="card shadow" id="tarjetaProfesores">
+                    <div class="d-flex flex-row justify-content-center mt-5">
+                        <img src="../img/sistema/profesor.png" alt="profesor" width="30%" height="30%">
+                    </div>
+                    <div class="card-body">
+                        <h5 class="card-title">Profesores</h5>
+                        <a href="Gestion.html?gestion=profesores" class="btn btn-primary" id="refProfesores">SELECCIONAR</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!--CRUD de estudiantes-->
+        <div id="crudEstudiantes" class="d-none">
+
+            <section id="busquedaCRUDEstudiantes" class="w-75 mx-auto mb-3">
+                <form class="form card shadow px-3 py-3">
+                    <div class="row row-md justify-content-center g-3">
+                        <div class="col-md-3">
+                            <label for="emailEstudiante" class="form-label">Correo electrónico:</label>
+                        </div>
+                        <div class="col-md-5">
+                            <input type="email" name="emailEstudiante" id="emailEstudiante" class="form-control">
+                        </div>
+                        <div class="col col-md-2 d-grid gap-1">
+                            <button type="submit" class="btn btn-primary">Buscar</button>
+                        </div>
+                        <div class="col col-md-2 d-grid gap-1">
+                            <button type="button" class="btn btn-success">Nuevo</button>
+                        </div>
+                    </div>
+                </form>
+            </section>
+
+            <section id="tablaCRUDEstudiantes" class="mb-3">
+                <div class="card shadow table-responsive p-3">
+                    <table class="table table-light table-hover table-striped">
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>NOMBRE</th>
+                                <th>PATERNO</th>
+                                <th>MATERNO</th>
+                                <th class="text-center">ACCIONES</th>
+                            </tr>
+                        </thead>
+                        <tbody id="tbodyEstudiantes">
+                            <!--<tr>
+                                <td>sergio@mail.com</td>
+                                <td>SERGIO</td>
+                                <td>AYALA</td>
+                                <td>ROMERO</td>
+                                <td>
+                                    <div class="d-md-flex justify-content-center" style="min-width: 200px;">
+                                        <div class="d-inline-flex px-2">
+                                            <a href="Gestion?accion=ver&email=sergio@mail.com" class="btn btn-primary" name="btnVer" id="btnVer1">
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-box-arrow-up-right" viewBox="0 0 16 16">
+                                                    <path fill-rule="evenodd" d="M8.636 3.5a.5.5 0 0 0-.5-.5H1.5A1.5 1.5 0 0 0 0 4.5v10A1.5 1.5 0 0 0 1.5 16h10a1.5 1.5 0 0 0 1.5-1.5V7.864a.5.5 0 0 0-1 0V14.5a.5.5 0 0 1-.5.5h-10a.5.5 0 0 1-.5-.5v-10a.5.5 0 0 1 .5-.5h6.636a.5.5 0 0 0 .5-.5z"/>
+                                                    <path fill-rule="evenodd" d="M16 .5a.5.5 0 0 0-.5-.5h-5a.5.5 0 0 0 0 1h3.793L6.146 9.146a.5.5 0 1 0 .708.708L15 1.707V5.5a.5.5 0 0 0 1 0v-5z"/>
+                                                </svg>
+                                            </a>
+                                        </div>
+                                        <div class="d-inline-flex px-2">
+                                            <a href="Gestion?accion=modificar&email=sergio@mail.com" class="btn btn-warning" name="btnMod" id="btnMod3">
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-pencil-square" viewBox="0 0 16 16">
+                                                    <path d="M15.502 1.94a.5.5 0 0 1 0 .706L14.459 3.69l-2-2L13.502.646a.5.5 0 0 1 .707 0l1.293 1.293zm-1.75 2.456-2-2L4.939 9.21a.5.5 0 0 0-.121.196l-.805 2.414a.25.25 0 0 0 .316.316l2.414-.805a.5.5 0 0 0 .196-.12l6.813-6.814z"/>
+                                                    <path fill-rule="evenodd" d="M1 13.5A1.5 1.5 0 0 0 2.5 15h11a1.5 1.5 0 0 0 1.5-1.5v-6a.5.5 0 0 0-1 0v6a.5.5 0 0 1-.5.5h-11a.5.5 0 0 1-.5-.5v-11a.5.5 0 0 1 .5-.5H9a.5.5 0 0 0 0-1H2.5A1.5 1.5 0 0 0 1 2.5v11z"/>
+                                                </svg>
+                                            </a>
+                                        </div>
+                                        <div class="d-inline-flex px-2">
+                                            <a href="Gestion?accion=eliminar&email=sergio@mail.com" class="btn btn-danger" name="btnDel" id="btnDel1">
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-x-square" viewBox="0 0 16 16">
+                                                    <path d="M14 1a1 1 0 0 1 1 1v12a1 1 0 0 1-1 1H2a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1h12zM2 0a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2H2z"/>
+                                                    <path d="M4.646 4.646a.5.5 0 0 1 .708 0L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 0 1 0-.708z"/>
+                                                </svg>
+                                            </a>
+                                        </div>
+                                    </div>
+                                </td>
+                            </tr>-->
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+        </div>
+        <!--CRUD de profesores-->
+        <div id="crudProfesores" class="d-none">
+            crud de profesores
+        </div>
+        <!--Modal ver estudiante-->
+        <div class="modal fade" id="modalVerEstudiante" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabelVerEstudiante" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-scrollable">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h3 class="modal-title" id="staticBackdropLabelVerEstudiante">Datos del estudiante</h3>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <section class="border bg-light p-3 mb-3">
+                            <div class="text-start fs-5 text-primary border-bottom mb-3">
+                                Datos de personales:
+                            </div>
+                            <div class="mb-3">
+                                <div class="fs-6 fw-bold">Nombre:</div>
+                                <div class="border fs-6 text-uppercase p-1" id="nombreEstudianteVer"></div>
+                            </div>
+                            <div class="mb-3">
+                                <div class="fs-6 fw-bold">Apellido paterno:</div>
+                                <div class="border fs-6 text-uppercase p-1" id="paternoEstudianteVer"></div>
+                            </div>
+                            <div class="mb-3">
+                                <div class="fs-6 fw-bold">Apellido materno:</div>
+                                <div class="border fs-6 text-uppercase p-1" id="maternoEstudianteVer"></div>
+                            </div>
+                            <div class="mb-3">
+                                <div class="fs-6 fw-bold">Fecha de nacimiento:</div>
+                                <div class="border fs-6 text-uppercase p-1" id="fnacimientoEstudianteVer"></div>
+                            </div>
+                            <div class="mb-3">
+                                <div class="fs-6 fw-bold">Sexo:</div>
+                                <div class="border fs-6 text-uppercase p-1" id="sexoEstudianteVer"></div>
+                            </div>
+                        </section>
+                        <section class="border bg-light p-3 mb-3">
+                            <div class="text-start fs-5 text-primary border-bottom mb-3">
+                                Datos de escolares:
+                            </div>
+                            <div class="mb-3">
+                                <div class="fs-6 fw-bold">Matricula:</div>
+                                <div class="border fs-6 text-uppercase p-1" id="matriculaEstudianteVer"></div>
+                            </div>
+                            <div class="mb-3">
+                                <div class="fs-6 fw-bold">Programa educativo:</div>
+                                <div class="border fs-6 text-uppercase p-1" id="programaEstudianteVer"></div>
+                            </div>
+                            <div class="mb-3">
+                                <div class="fs-6 fw-bold">Cuatrimestre:</div>
+                                <div class="border fs-6 text-uppercase p-1" id="cuatrimestreEstudianteVer"></div>
+                            </div>
+                        </section>
+                        <section class="border bg-light p-3 mb-3">
+                            <div class="text-start fs-5 text-primary border-bottom mb-3">
+                                Datos de acceso:
+                            </div>
+                            <div class="mb-3">
+                                <div class="fs-6 fw-bold">Correo electrónico:</div>
+                                <div class="border fs-6 text-success p-1" id="emailEstudianteVer"></div>
+                            </div>
+                        </section>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Entendido</button>
+                    </div>                
+                </div>
+            </div>
+        </div>
+        <!--Modal modificar estudiante-->
+        <div class="modal fade" id="modalModificarEstudiante" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabelModificarEstudiante" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-scrollable">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h3 class="modal-title" id="staticBackdropLabelModificarEstudiante">Datos del estudiante</h3>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <!--Form datos personales-->
+                        <form id="formDatosPersonalesEstudiante" class="border bg-light p-3 mb-3">
+                            <div class="text-start fs-5 text-primary border-bottom mb-3">
+                                Datos de personales:
+                            </div>
+                            <!--<div class="d-flex flex-row border-bottom mb-3 pb-1">
+                                <div class="h4 text-primary">Datos personales:</div>
+                                <button type="button" class="btn btn-primary ms-auto" name="btnModificarEstudiante1" id="btnModificarEstudiante1">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-pencil-square" viewBox="0 0 16 16">
+                                        <path d="M15.502 1.94a.5.5 0 0 1 0 .706L14.459 3.69l-2-2L13.502.646a.5.5 0 0 1 .707 0l1.293 1.293zm-1.75 2.456-2-2L4.939 9.21a.5.5 0 0 0-.121.196l-.805 2.414a.25.25 0 0 0 .316.316l2.414-.805a.5.5 0 0 0 .196-.12l6.813-6.814z"/>
+                                        <path fill-rule="evenodd" d="M1 13.5A1.5 1.5 0 0 0 2.5 15h11a1.5 1.5 0 0 0 1.5-1.5v-6a.5.5 0 0 0-1 0v6a.5.5 0 0 1-.5.5h-11a.5.5 0 0 1-.5-.5v-11a.5.5 0 0 1 .5-.5H9a.5.5 0 0 0 0-1H2.5A1.5 1.5 0 0 0 1 2.5v11z"/>
+                                    </svg>
+                                </button>
+                            </div>-->
+                            <div class="mb-3">
+                                <label for="nombreEstudianteModificar" class="fs-6">Nombre:<span class="text-danger">*</span></label>
+                                <input type="text" name="nombreEstudianteModificar" id="nombreEstudianteModificar" class="form-control text-uppercase" autofocus>
+                            </div>
+                            <div class="mb-3">
+                                <label for="paternoEstudianteModificar" class="fs-6">Apellido paterno:<span class="text-danger">*</span></label>
+                                <input type="text" name="paternoEstudianteModificar" id="paternoEstudianteModificar" class="form-control text-uppercase">
+                            </div>
+                            <div class="mb-3">
+                                <label for="maternoEstudianteModificar" class="fs-6">Apellido materno:</label>
+                                <input type="text" name="maternoEstudianteModificar" id="maternoEstudianteModificar" class="form-control text-uppercase">
+                            </div>
+                            <div class="mb-3">
+                                <label for="fnacimientoEstudianteModificar" class="fs-6">Fecha de nacimiento:<span class="text-danger">*</span></label>
+                                <input type="date" name="fnacimientoEstudianteModificar" id="fnacimientoEstudianteModificar" class="form-control">
+                            </div>
+                            <div class="mb-3">
+                                <label for="sexo" class="fs-6">Sexo:<span class="text-danger">*</span></label>
+                                <div class="h6" id="sexoEstudianteModificar">
+                                    <div class="form-check form-check-inline">
+                                        <input class="form-check-input text-uppercase" type="radio" name="sexo" id="sexo1EstudianteModificar" value="hombre">
+                                        <label class="form-check-label text-uppercase" for="sexo1EstudianteModificar">Hombre</label>
+                                    </div>
+                                    <div class="form-check form-check-inline">
+                                        <input class="form-check-input text-uppercase" type="radio" name="sexo" id="sexo2EstudianteModificar" value="mujer">
+                                        <label class="form-check-label text-uppercase" for="sexo2EstudianteModificar">Mujer</label>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row row-md g-1 mb-3 d-nonee" id="navegacionModificarEstudiante1">
+                                <!--<div class="col col-md d-grid gap-1">
+                                    <button type="button" class="btn btn-danger" id="btnCancelarModificarEstudiante1">Cancelar</button>
+                                </div>-->
+                                <div class="col col-md d-grid gap-1">
+                                    <button type="submit" class="btn btn-success" id="btnGuardarModificarEstudiante1" name="btnGuardar" data-bs-target="#modalConfirmarAccion" data-bs-toggle="modal" data-bs-accion="modificar">Guardar</button>
+                                </div>
+                            </div>
+                        </form>
+                        <!--Form datos escolares-->
+                        <form id="formDatosEscolaresEstudiante" class="border bg-light p-3 mb-3">
+                            <div class="text-start fs-5 text-primary border-bottom mb-3">
+                                Datos de escolares:
+                            </div>
+                            <!--<div class="d-flex flex-row border-bottom mb-3 pb-1">
+                                <h4 class="h4 text-primary">Datos escolares:</h4>
+                                <button type="button" class="btn btn-primary ms-auto" name="btnModificarEstudiante2" id="btnModificarEstudiante2">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-pencil-square" viewBox="0 0 16 16">
+                                        <path d="M15.502 1.94a.5.5 0 0 1 0 .706L14.459 3.69l-2-2L13.502.646a.5.5 0 0 1 .707 0l1.293 1.293zm-1.75 2.456-2-2L4.939 9.21a.5.5 0 0 0-.121.196l-.805 2.414a.25.25 0 0 0 .316.316l2.414-.805a.5.5 0 0 0 .196-.12l6.813-6.814z"/>
+                                        <path fill-rule="evenodd" d="M1 13.5A1.5 1.5 0 0 0 2.5 15h11a1.5 1.5 0 0 0 1.5-1.5v-6a.5.5 0 0 0-1 0v6a.5.5 0 0 1-.5.5h-11a.5.5 0 0 1-.5-.5v-11a.5.5 0 0 1 .5-.5H9a.5.5 0 0 0 0-1H2.5A1.5 1.5 0 0 0 1 2.5v11z"/>
+                                    </svg>
+                                </button>
+                            </div>-->
+                            <div class="mb-3">
+                                <label for="matriculaEstudianteModificar" class="fs-6">Matrícula:</label>
+                                <input type="text" name="matriculaEstudianteModificar" id="matriculaEstudianteModificar" class="form-control text-uppercase">
+                            </div>
+                            <div class="mb-3">
+                                <label for="programaEstudianteModificar" class="fs-6">Programa educativo:</label>
+                                <select name="programaEstudianteModificar" id="programaEstudianteModificar" class="form-select text-uppercase">
+                                    <option value="0" selected>Ninguno.</option>
+                                </select>
+                            </div>
+                            <div class="mb-3">
+                                <label for="cuatrimestreEstudianteModificar" class="fs-6">Cuatrimestre:</label>
+                                <select name="cuatrimestreEstudianteModificar" id="cuatrimestreEstudianteModificar" class="form-select text-uppercase">
+                                    <option value="0" selected>Ninguno.</option>
+                                </select>
+                            </div>
+                            <div class="row row-md g-1 mb-3 d-nonee" id="navegacionModificarEstudiante2">
+                                <!--<div class="col col-md d-grid gap-1">
+                                    <button type="button" class="btn btn-danger" id="btnCancelarModificarEstudiante2">Cancelar</button>
+                                </div>-->
+                                <div class="col col-md d-grid gap-1">
+                                    <button type="submit" class="btn btn-success" id="btnGuardarModificarEstudiante2" name="btnGuardar" data-bs-target="#modalConfirmarAccion" data-bs-toggle="modal" data-bs-accion="modificar">Guardar</button>
+                                </div>
+                            </div>
+                        </form>
+                        <!--Sección de datos de acceso-->
+                        <section class="border bg-light p-3 mb-3">
+                            <div class="text-start fs-5 text-primary border-bottom mb-3">
+                                Datos de acceso:
+                            </div>
+                            <div class="mb-3">
+                                <div class="fs-6">Correo electrónico:</div>
+                                <div class="fs-6 text-success" id="emailEstudianteModificar">---</div>
+                            </div>
+                            <!--<div class="mb-3">
+                                <div class="fs-6 flex-md-grow-1">Contraseña:</div>
+                                <div><button type="button" class="btn btn-primary" id="btnCambiarContrasenaEstudiante">Cambiar</button></div>
+                            </div>-->
+                        </section>
+                        <!--Form cambio de contraseña-->
+                        <form id="formContrasenaEstudiante" class="border bg-light p-3 mb-3">
+                            <div class="text-start fs-5 text-primary border-bottom mb-3">
+                                Cambio de contraseña:
+                            </div>
+                            <div class="mb-3">
+                                <label for="contrasenaNuevaEstudiante1" class="form-label fs-6 flex-md-grow-1">Ingrese su nueva contraseña:</label>
+                                <input type="password" name="contrasenaNuevaEstudiante1" id="contrasenaNuevaEstudiante1" class="form-control">
+                            </div>
+                            <div class="mb-3">
+                                <label for="contrasenaNuevaEstudiante2" class="form-label fs-6 flex-md-grow-1">Vuelva a ingresar su nueva contraseña:</label>
+                                <input type="password" name="contrasenaNuevaEstudiante2" id="contrasenaNuevaEstudiante2" class="form-control">
+                            </div>
+                            <div class="row row-md g-1 mb-3 d-nonee" id="navegacionModificarEstudiante3">
+                                <!--<div class="col col-md d-grid gap-1">
+                                    <button type="button" class="btn btn-danger" id="btnCancelarModificarEstudiante2">Cancelar</button>
+                                </div>-->
+                                <div class="col col-md d-grid gap-1">
+                                    <button type="submit" class="btn btn-success" id="btnGuardarModificarEstudiante3" name="btnGuardar" data-bs-target="#modalConfirmarAccion" data-bs-toggle="modal" data-bs-accion="modificar">Guardar</button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+                    </div>                
+                </div>
+            </div>
+        </div>
+        <!--Modal confirmar acción-->
+        <div class="modal fade" id="modalConfirmarAccion" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabelConfirmarAccion" aria-hidden="true">
+            <form class="modal-dialog modal-dialog-scrollable">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h3 class="modal-title" id="staticBackdropLabelConfirmarAccion">Confimar acción</h3>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <div id="mensajeModalConfirmarAccion" class="fs-5"></div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" id="btnAbortar">Abortar</button>
+                        <button type="button" class="btn btn-success" id="btnConfirmar" data-bs-dismiss="modal">Confirmar</button>
+                    </div>                
+                </div>
+            </form>
+        </div>
+
+    </div>
+    <!--<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
+    -->
+    <script src="../bootstrap-5.1.3-dist/js/bootstrap.bundle.min.js"></script>
+    <script src="scripts/scriptGestion.js"></script>
+</body>
+</html>
